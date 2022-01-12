@@ -188,7 +188,7 @@ def addnewentry(canvas, size, x, y):
 def addnewlabel(canvas, size, x, y, inptext):
     mylabel=Label(root, text=inptext)
     canvas.create_window(x,y,height=boxsize, width=boxsize, window=mylabel)
-    return None
+    return
 
 root=Tk()
 boxsize=35
