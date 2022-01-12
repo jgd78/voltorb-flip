@@ -34,9 +34,7 @@ def Calculate(totalsheight, totalswidth, possmatrix):
 
     rowcombsnoinv=removeinvalid(temprowcombs, tempcolcombs) #removes number combinations for each row that cannot possibly match with any number combinations for a column
     colcombsnoinv=removeinvalid(tempcolcombs, temprowcombs) #removes number combinations for each column that cannot possibly match with any number combinations for a row
-    print(rowcombsnoinv)
-    print("\n")
-    print(colcombsnoinv)
+
 
 
     oddslossrow, oddsgoodrow=calcpercentagemat(rowcombsnoinv) #calculates the percentage of combinations that have 0 in the (i,j) entry and the percentage that have 2 or 3 in the (i,j) entry for 
@@ -186,7 +184,11 @@ def addnewentry(canvas, size, x, y):
     myentry=Entry(root)
     canvas.create_window(x,y,height=boxsize, width=boxsize, window=myentry)
     return myentry
-    
+
+def addnewlabel(canvas, size, x, y, inptext):
+    mylabel=Label(root, text=inptext)
+    canvas.create_window(x,y,height=boxsize, width=boxsize, window=mylabel)
+    return None
 
 root=Tk()
 boxsize=35
@@ -194,20 +196,54 @@ h=5
 w=5
 entryarray=[[None for j in range(w+2)]for i in range(h+2)]
 
-canvas1=Canvas(root, width =13.5*boxsize, height=13.5*boxsize)
+canvas1=Canvas(root, width =15*boxsize, height=15*boxsize)
 canvas1.pack()
     
 
 for i in range(h+2):
     for j in range(w+2):
-        x=(1+i)*1.5*boxsize-.5*boxsize
-        y=(1+j)*1.5*boxsize-.5*boxsize
+        x=(2+i)*1.5*boxsize-.5*boxsize
+        y=(2+j)*1.5*boxsize-.5*boxsize
         if i<=4 or j<=4:
             if i>=5:
                 x+=boxsize
             if j>=5: 
                 y+=boxsize           
             entryarray[i][j]=addnewentry(canvas1, boxsize, x,y)
+        if i==0:
+            x2=boxsize
+            y2=(2+j)*1.5*boxsize-.5*boxsize
+            mytext=str(j+1)
+            if j==5:
+                mytext="S"
+                y2+=boxsize
+            elif j==6:
+                mytext="V"
+                y2+=boxsize
+            addnewlabel(canvas1, boxsize, x2, y2, mytext)
+        if j==0:
+            x2=(2+i)*1.5*boxsize-.5*boxsize
+            y2=boxsize
+            mytext=str(i+1)
+            if i==5:
+                mytext="S"
+                x2+=boxsize
+            elif i==6:
+                mytext="V"
+                x2+=boxsize
+            addnewlabel(canvas1, boxsize, x2, y2, mytext)            
+        
+for i in range(h+2):
+    x2=boxsize
+    y2=(2+i)*1.5*boxsize-.5*boxsize
+    mytext=str(i+1)
+    if i==5:
+        y2+=boxsize
+        mytext="S"
+    elif i==6:
+        y2+=boxsize
+        mytext="V"
+    
 def solve():
     pmatrix=[[(0,1,2,3) for j in range(w)]for i in range(h)]
     theight=[[],[]]
@@ -239,10 +275,10 @@ def solve():
         bestchoicesstr+="; ("+ str(elt[0]+1) + ", " +str(elt[1]+1)+")"
     besthighstr="tiebreaker; " "("+ str(bestoddshigh[0][0]+1) + ", " +str(bestoddshigh[0][1]+1)+")"       
     label1=Label(root, text=bestchoicesstr)
-    canvas1.create_window(10.25*boxsize, 10.5*boxsize, width= 5*boxsize, window=label1)
+    canvas1.create_window(11.75*boxsize, 12*boxsize, width= 5*boxsize, window=label1)
     label2=Label(root, text=besthighstr)
-    canvas1.create_window(10.25*boxsize, 11.5*boxsize, window=label2)
+    canvas1.create_window(11.75*boxsize, 12.5*boxsize, window=label2)
 
 button1=Button(text="Solve", command=solve)
-canvas1.create_window(10.25*boxsize, 9.5*boxsize, height=boxsize, width=2.5*boxsize, window=button1)
+canvas1.create_window(11.75*boxsize, 11*boxsize, height=boxsize, width=2.5*boxsize, window=button1)
 root.mainloop()
